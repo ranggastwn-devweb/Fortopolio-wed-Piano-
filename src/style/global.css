@@ -1,0 +1,460 @@
+
+    /* =============================================
+       PIANOKUY — Luxury Dark Instrument UI (8 Notes)
+       ============================================= */
+
+    :root {
+      --bg-deep:        #0a0806;
+      --bg-surface:     #110e0a;
+      --bg-panel:       #1a1410;
+
+      --gold-bright:    #f0c060;
+      --gold-mid:       #c8943a;
+      --gold-dim:       #7a5a28;
+      --gold-glow:      rgba(240, 192, 96, 0.18);
+
+      --key-white:      #f5f0e8;
+      --key-white-hover:#fffdf5;
+      --key-white-press:#e8dfc8;
+      --key-shadow:     rgba(0, 0, 0, 0.7);
+
+      --text-primary:   #f0e8d0;
+      --text-secondary: #8a7a60;
+      --text-dim:       #4a3f30;
+
+      --wood-dark:      #2a1e0e;
+      --wood-mid:       #3d2c18;
+      --wood-light:     #5a3f22;
+
+      --radius-key:     0 0 12px 12px;
+      --radius-body:    20px;
+
+      --transition-smooth: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --transition-press:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { height: 100%; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-deep);
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Ambient Orbs ── */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orb-drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200, 148, 58, 0.13) 0%, transparent 70%);
+      top: -180px; left: -120px;
+      animation-delay: 0s;
+    }
+    .orb-2 {
+      width: 450px; height: 450px;
+      background: radial-gradient(circle, rgba(100, 60, 200, 0.08) 0%, transparent 70%);
+      bottom: -120px; right: -80px;
+      animation-delay: -4s;
+    }
+    .orb-3 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(240, 192, 96, 0.09) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -8s;
+    }
+    @keyframes orb-drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, 20px) scale(1.1); }
+    }
+    .orb-3 { animation-name: orb-drift-center; }
+    @keyframes orb-drift-center {
+      0%   { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(calc(-50% + 20px), calc(-50% + 15px)) scale(1.08); }
+    }
+
+    /* ── App ── */
+    .app {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+      padding: 40px 24px 32px;
+      width: 100%;
+      max-width: 920px;
+      animation: app-enter 1s var(--transition-smooth) both;
+    }
+    @keyframes app-enter {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      animation: fade-up 0.8s var(--transition-smooth) 0.1s both;
+    }
+    .header__badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--gold-mid);
+      text-transform: uppercase;
+      border: 1px solid var(--gold-dim);
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+      background: rgba(200, 148, 58, 0.06);
+    }
+    .header__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-mid) 40%, #e8a840 70%, var(--gold-bright) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s ease-in-out infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+    .header__subtitle {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+    }
+    .header__subtitle kbd {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 1px 6px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 4px;
+      background: rgba(240, 192, 96, 0.08);
+      color: var(--gold-mid);
+      margin: 0 1px;
+    }
+
+    /* ── Note Scale Display (Do Re Mi...) ── */
+    .scale-display {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      animation: fade-up 0.85s var(--transition-smooth) 0.2s both;
+      flex-wrap: wrap;
+    }
+    .scale-pill {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 5px 13px;
+      border-radius: 100px;
+      border: 1px solid rgba(200, 148, 58, 0.2);
+      color: var(--text-dim);
+      background: rgba(200, 148, 58, 0.04);
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+    }
+    .scale-pill.active {
+      border-color: var(--gold-mid);
+      color: var(--gold-bright);
+      background: rgba(200, 148, 58, 0.12);
+      box-shadow: 0 0 16px rgba(240, 192, 96, 0.25);
+    }
+    .scale-separator {
+      color: var(--text-dim);
+      font-size: 0.6rem;
+      opacity: 0.4;
+    }
+
+    /* ── Piano Wrapper ── */
+    .piano-wrapper {
+      width: 100%;
+      animation: fade-up 0.9s var(--transition-smooth) 0.3s both;
+    }
+
+    /* ── Piano Body ── */
+    .piano-body {
+      position: relative;
+      background: linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-dark) 40%, var(--wood-mid) 100%);
+      border-radius: var(--radius-body);
+      padding: 0 24px 24px;
+      box-shadow:
+        0 0 0 1px rgba(200, 148, 58, 0.18),
+        0 2px 0 0   rgba(255, 220, 140, 0.08) inset,
+        0 -2px 0 0  rgba(0, 0, 0, 0.5) inset,
+        0 40px 100px rgba(0, 0, 0, 0.7),
+        0 10px 40px rgba(200, 148, 58, 0.1);
+      background-image:
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px),
+        linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-dark) 40%, var(--wood-mid) 100%);
+    }
+    .piano-lid {
+      height: 16px;
+      background: linear-gradient(180deg, var(--wood-light) 0%, var(--wood-dark) 100%);
+      border-radius: var(--radius-body) var(--radius-body) 0 0;
+      margin: 0 -24px 20px;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(255, 220, 140, 0.12) inset;
+    }
+    .piano-base {
+      height: 12px;
+      background: linear-gradient(0deg, var(--wood-dark) 0%, var(--wood-mid) 100%);
+      border-radius: 0 0 var(--radius-body) var(--radius-body);
+      margin: 10px -24px -24px;
+      box-shadow: 0 -1px 0 rgba(255, 220, 140, 0.08) inset;
+    }
+
+    /* ── Piano Keys Container ── */
+    .piano-keys {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 8px;
+    }
+
+    /* ── Individual Key ── */
+    .piano-key {
+      position: relative;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-family: var(--font-display);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+
+      width: 88px;
+      height: 210px;
+      background: linear-gradient(180deg, #faf8f0 0%, var(--key-white) 60%, #d8d0ba 100%);
+      border-radius: var(--radius-key);
+      box-shadow:
+        3px 6px 0   rgba(0,0,0,0.5),
+        1px 3px 8px  rgba(0,0,0,0.4),
+        0   0   0 1px rgba(0,0,0,0.3),
+        0  -2px 6px rgba(255,255,255,0.6) inset,
+        0   2px 0   rgba(0,0,0,0.1) inset;
+
+      transition:
+        transform  0.08s var(--transition-press),
+        box-shadow 0.08s var(--transition-press),
+        background 0.12s ease,
+        filter     0.2s ease;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 16px;
+      gap: 4px;
+
+      /* Color accent at top by note */
+      overflow: hidden;
+    }
+
+    /* Colored top stripe per key */
+    .piano-key::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      border-radius: 0;
+      opacity: 0.6;
+      transition: opacity 0.2s ease, height 0.2s ease;
+    }
+
+    .piano-key[data-note="do"]::before    { background: #e05555; }
+    .piano-key[data-note="re"]::before    { background: #e08030; }
+    .piano-key[data-note="mi"]::before    { background: #d4b800; }
+    .piano-key[data-note="fa"]::before    { background: #4aaa50; }
+    .piano-key[data-note="sol"]::before   { background: #3090d0; }
+    .piano-key[data-note="la"]::before    { background: #5060e0; }
+    .piano-key[data-note="si"]::before    { background: #9040c0; }
+    .piano-key[data-note="do2"]::before   { background: #e05555; }
+
+    .piano-key.pressed::before,
+    .piano-key:active::before {
+      opacity: 1;
+      height: 8px;
+    }
+
+    /* Solfège label */
+    .key-solfege {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      text-transform: capitalize;
+      transition: color 0.15s ease;
+      line-height: 1;
+    }
+
+    /* Keyboard shortcut hint */
+    .key-hint {
+      font-family: var(--font-body);
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: rgba(80,60,30,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.15s ease;
+    }
+
+    /* ── Key Hover ── */
+    .piano-key:hover {
+      background: linear-gradient(180deg, #ffffff 0%, var(--key-white-hover) 60%, #e0d8c0 100%);
+      box-shadow:
+        3px 6px 0     rgba(0,0,0,0.5),
+        1px 3px 12px  rgba(0,0,0,0.4),
+        0   0   0  1px rgba(0,0,0,0.3),
+        0  -2px 10px rgba(255,255,255,0.8) inset,
+        0   0   24px rgba(240, 192, 96, 0.2),
+        0   0   50px rgba(240, 192, 96, 0.07);
+      filter: brightness(1.05);
+    }
+    .piano-key:hover .key-solfege { color: var(--gold-dim); }
+
+    /* ── Key Pressed ── */
+    .piano-key:active,
+    .piano-key.pressed {
+      transform: translateY(6px) scaleY(0.97);
+      background: linear-gradient(180deg, #e8dfc8 0%, var(--key-white-press) 100%);
+      box-shadow:
+        1px 2px 0     rgba(0,0,0,0.5),
+        0   1px 4px   rgba(0,0,0,0.5),
+        0   0   0  1px rgba(0,0,0,0.3),
+        0   2px 8px rgba(0,0,0,0.2) inset,
+        0   0   24px rgba(240, 192, 96, 0.35),
+        0   0   70px rgba(240, 192, 96, 0.14);
+      filter: brightness(0.95);
+    }
+    .piano-key:active .key-solfege,
+    .piano-key.pressed .key-solfege { color: var(--gold-mid); }
+    .piano-key:active .key-hint,
+    .piano-key.pressed .key-hint    { color: rgba(200, 148, 58, 0.5); }
+
+    /* ── Glow ripple ── */
+    .piano-key::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(ellipse at center 30%, rgba(240, 192, 96, 0.28) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .piano-key.pressed::after { opacity: 1; }
+
+    /* ── Note Display ── */
+    .note-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      animation: fade-up 1s var(--transition-smooth) 0.45s both;
+      min-height: 80px;
+    }
+    .note-display__label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .note-display__note {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      text-shadow: 0 0 30px rgba(240, 192, 96, 0.5);
+      min-width: 3ch;
+      text-align: center;
+    }
+    .note-display__note.ping {
+      animation: note-ping 0.4s var(--transition-smooth) both;
+    }
+    @keyframes note-ping {
+      0%   { transform: scale(0.8);  opacity: 0; }
+      60%  { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    /* ── Footer ── */
+    .footer {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      animation: fade-up 1s var(--transition-smooth) 0.55s both;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 800px) {
+      .piano-key { width: 68px; height: 170px; }
+      .piano-body { padding: 0 12px 16px; }
+      .piano-keys { gap: 4px; }
+    }
+    @media (max-width: 580px) {
+      .piano-key { width: 52px; height: 148px; }
+      .key-solfege { font-size: 0.85rem; }
+      .key-hint { display: none; }
+      .piano-keys { gap: 3px; }
+      .app { gap: 24px; padding: 28px 10px 24px; }
+      .scale-display { gap: 6px; }
+      .scale-pill { font-size: 0.68rem; padding: 4px 10px; }
+    }
+    @media (max-width: 420px) {
+      .piano-key { width: 40px; height: 128px; }
+      .key-solfege { font-size: 0.7rem; }
+      .piano-body { padding: 0 8px 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }

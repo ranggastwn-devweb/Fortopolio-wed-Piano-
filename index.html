@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Pianokuy ♪</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./src/style/global.css"/>
+</head>
+<body>
+
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <main class="app">
+
+    <header class="header">
+      <div class="header__badge">🎹 Musical Scale</div>
+      <h1 class="header__title">Pianokuy</h1>
+      <p class="header__subtitle">
+        Click the keys - or press
+        <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>G</kbd><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd>
+        on the keyboard
+      </p>
+    </header>
+
+    <!-- Do Re Mi scale pill indicators -->
+    <div class="scale-display" id="scalePills">
+      <!-- injected by JS -->
+    </div>
+
+    <section class="piano-wrapper" aria-label="Piano keyboard">
+      <div class="piano-body">
+        <div class="piano-lid"></div>
+        <div class="piano-keys" id="pianoKeys" role="group" aria-label="Piano keys">
+          <!-- injected by JS -->
+        </div>
+        <div class="piano-base"></div>
+      </div>
+    </section>
+
+    <div class="note-display" id="noteDisplay" aria-live="polite">
+      <span class="note-display__label">Memainkan</span>
+      <span class="note-display__note" id="currentNote">—</span>
+    </div>
+
+    <footer class="footer">
+      <span>Dibuat oleh Anggastwn ♪ · Pianokuy © 2026</span>
+    </footer>
+
+  </main>
+
+  <script src="./src/js/index.js"> </script>
+</body>
+</html>
